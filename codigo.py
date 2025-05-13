@@ -55,15 +55,15 @@ class GestorTareas:
 
     def añadir_tarea(self, nombre, prioridad, fecha_vencimiento, dependencias=None):
         if not nombre.strip():
-            print("❌ El nombre no puede estar vacío.")
+            print(" El nombre no puede estar vacío.")
             return
         if nombre in self.tareas_dict:
-            print("❌ Ya existe una tarea con ese nombre.")
+            print(" Ya existe una tarea con ese nombre.")
             return
         try:
             prioridad = int(prioridad)
         except ValueError:
-            print("❌ La prioridad debe ser un número entero.")
+            print(" La prioridad debe ser un número entero.")
             return
 
         tarea = Tarea(nombre, prioridad, fecha_vencimiento, dependencias)
@@ -71,37 +71,37 @@ class GestorTareas:
         heapq.heappush(self.tareas, tarea)
         self.tareas_dict[nombre] = tarea
         self.guardar()
-        print("✅ Tarea añadida correctamente.")
+        print("Tarea añadida correctamente.")
 
     def mostrar_tareas(self, ordenar_por_fecha=False):
         tareas_ordenadas = sorted(self.tareas, key=lambda t: (t.fecha_vencimiento if ordenar_por_fecha else t))
-        print("\n📋 Tareas pendientes:")
+        print("\n Tareas pendientes:")
         for tarea in tareas_ordenadas:
             print(f"- {tarea.nombre} | Prioridad: {tarea.prioridad} | Vence: {tarea.fecha_vencimiento.date()} | Dep: {', '.join(tarea.dependencias)}")
 
     def completar_tarea(self, nombre):
         if nombre not in self.tareas_dict:
-            print("❌ Tarea no encontrada.")
+            print(" Tarea no encontrada.")
             return
 
         # Validar que no haya otras tareas dependiendo de esta
         for t in self.tareas:
             if nombre in t.dependencias:
-                print(f"❌ No puedes completar '{nombre}' porque depende de ella la tarea '{t.nombre}'.")
+                print(f" No puedes completar '{nombre}' porque depende de ella la tarea '{t.nombre}'.")
                 return
 
         self.tareas = [t for t in self.tareas if t.nombre != nombre]
         heapq.heapify(self.tareas)
         del self.tareas_dict[nombre]
         self.guardar()
-        print("✅ Tarea completada y eliminada.")
+        print(" Tarea completada y eliminada.")
 
     def obtener_siguiente(self):
         if not self.tareas:
-            print("📭 No hay tareas pendientes.")
+            print(" No hay tareas pendientes.")
             return
         siguiente = self.tareas[0]
-        print(f"\n🔔 Siguiente tarea: {siguiente.nombre} | Prioridad: {siguiente.prioridad} | Vence: {siguiente.fecha_vencimiento.date()}")
+        print(f"\n Siguiente tarea: {siguiente.nombre} | Prioridad: {siguiente.prioridad} | Vence: {siguiente.fecha_vencimiento.date()}")
 
 # -------------------------------
 # Menú de uso
@@ -138,10 +138,10 @@ def menu():
         elif op == "5":
             gestor.obtener_siguiente()
         elif op == "6":
-            print("👋 ¡Hasta luego!")
+            print(" ¡Hasta luego!")
             break
         else:
-            print("❌ Opción no válida.")
+            print(" Opción no válida.")
 
 if __name__ == "__main__":
     menu()
